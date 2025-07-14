@@ -10,14 +10,14 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { TicketBookingProxy } from "./action";
+import { ticketBookingStepController } from "./action";
 import { BookingTicketStep, Payload, Seat } from "./BookingTicketStep";
 import { useFormStatus } from "react-dom";
 
 export function MultiStepFormWithRHF() {
   const methods = useForm<Payload>();
 
-  const [state, formAction] = useActionState(TicketBookingProxy, {
+  const [state, formAction] = useActionState(ticketBookingStepController, {
     seats: [],
     step: 0,
   });

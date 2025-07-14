@@ -13,7 +13,7 @@ export type State = {
   seats: Seat[];
 };
 
-export const TicketBookingProxy = async (
+export const ticketBookingStepController = async (
   prevState: State,
   payload: Payload
 ): Promise<State> => {
