@@ -1,16 +1,16 @@
 "use server";
 
 import {
-  BookingTicketStep,
+  BookingTicketStep as Step,
   Payload,
   Seat,
   SeatsSchema,
 } from "./BookingTicketStep";
 
 export type State = {
-  step: (typeof BookingTicketStep)[keyof typeof BookingTicketStep];
-  seats: Seat[];
+  step: Step;
   error?: Error;
+  seats: Seat[];
 };
 
 export const TicketBookingProxy = async (
@@ -18,20 +18,18 @@ export const TicketBookingProxy = async (
   payload: Payload
 ): Promise<State> => {
   try {
+    // prettier-ignore
     switch (prevState.step) {
-      case BookingTicketStep.reservation:
-        return reserveSeats(payload.seats);
-      case BookingTicketStep.review:
-        return bookTickets(payload.seats);
-      default:
-        throw new Error();
+      case Step.reservation:  return reserveSeats(payload.seats);
+      case Step.review:       return bookTickets(payload.seats);
+      default:                throw new Error();
     }
   } catch (error) {
     // reset user to step 1
     return {
       seats: [],
       error: error instanceof Error ? error : new Error("Something gone wrong"),
-      step: BookingTicketStep.reservation,
+      step: Step.reservation,
     };
   }
 };
@@ -43,13 +41,13 @@ const reserveSeats = (seats: Seat[]): State => {
     // mark seats as reserved in
 
     return {
-      step: BookingTicketStep.review,
+      step: Step.review,
       seats: parsedSeats,
     };
   } catch (error) {
     const seatString = seats.map((seat) => seat.value).join(", ");
     return {
-      step: BookingTicketStep.reservation,
+      step: Step.reservation,
       seats: [],
       error: new Error("Cannot book seat " + seatString),
     };
@@ -64,6 +62,6 @@ const bookTickets = (seats: Seat[]): State => {
 
   return {
     seats,
-    step: BookingTicketStep.complete,
+    step: Step.complete,
   };
 };

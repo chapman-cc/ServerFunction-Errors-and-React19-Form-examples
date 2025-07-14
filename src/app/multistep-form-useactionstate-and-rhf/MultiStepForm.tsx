@@ -12,6 +12,7 @@ import {
 } from "react-hook-form";
 import { TicketBookingProxy } from "./action";
 import { BookingTicketStep, Payload, Seat } from "./BookingTicketStep";
+import { useFormStatus } from "react-dom";
 
 export function MultiStepFormWithRHF() {
   const methods = useForm<Payload>();
@@ -61,6 +62,7 @@ export function MultiStepFormWithRHF() {
 const Reservation = () => {
   const { register, control } = useFormContext<Payload>();
   const { fields, append } = useFieldArray({ control, name: "seats" });
+  const { pending } = useFormStatus();
 
   return (
     <div>
@@ -80,7 +82,7 @@ const Reservation = () => {
       <br />
 
       <br />
-      <button>Reserve Seats</button>
+      <button disabled={pending}>Reserve Seats</button>
     </div>
   );
 };
@@ -88,8 +90,10 @@ const Reservation = () => {
 // Mini form 2
 
 const Review = () => {
+  const { pending } = useFormStatus();
   const { getValues } = useFormContext<Payload>();
   const seats = getValues("seats");
+
   return (
     <div>
       <div>
@@ -98,7 +102,9 @@ const Review = () => {
       {seats.map((seat) => (
         <input name="seat" key={seat.id} value={seat.value} disabled />
       ))}
-      <button type="submit">Confirm</button>
+      <button type="submit" disabled={pending}>
+        Confirm
+      </button>
     </div>
   );
 };
