@@ -83,6 +83,11 @@ export default function Home() {
           </p>
         </li>
       </ol>
+
+      <img
+        src="https://upload.wikimedia.org/wikipedia/en/4/44/I_am_Error.png"
+        alt="I am error"
+      />
     </div>
   );
 }
