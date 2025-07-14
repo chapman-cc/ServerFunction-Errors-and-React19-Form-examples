@@ -75,6 +75,13 @@ export default function Home() {
             </Link>
           </p>
         </li>
+        <li>
+          <p>
+            <Link href="/multistep-form-useactionstate-and-rhf">
+              MultiStep form with useActionState and React Hook Form
+            </Link>
+          </p>
+        </li>
       </ol>
     </div>
   );
