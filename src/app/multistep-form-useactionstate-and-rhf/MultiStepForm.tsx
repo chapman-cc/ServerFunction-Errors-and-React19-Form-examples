@@ -10,20 +10,16 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { bookingTicketInMultipleSteps, State } from "./action";
-import { BookingTicketStep, Payload } from "./BookingTicketStep";
-
-const orderedSteps = Object.entries(BookingTicketStep).sort(
-  ([, a], [, b]) => a - b
-);
+import { TicketBookingProxy } from "./action";
+import { BookingTicketStep, Payload, Seat } from "./BookingTicketStep";
 
 export function MultiStepFormWithRHF() {
   const methods = useForm<Payload>();
 
-  const [state, formAction] = useActionState<State, Payload>(
-    bookingTicketInMultipleSteps,
-    { seats: [], step: 0 }
-  );
+  const [state, formAction] = useActionState(TicketBookingProxy, {
+    seats: [],
+    step: 0,
+  });
 
   const formActionTransition = (payload: Payload) => {
     startTransition(() => formAction(payload));
@@ -34,18 +30,24 @@ export function MultiStepFormWithRHF() {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(formActionTransition)}>
           <Stepper activeStep={state.step}>
-            {orderedSteps.map(([label, step]) => (
-              <Step key={step}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
+            <Step>
+              <StepLabel>{BookingTicketStep.reservation}</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>{BookingTicketStep.review}</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel>{BookingTicketStep.complete}</StepLabel>
+            </Step>
           </Stepper>
-          <h3 style={{ color: "red" }}>{state.error?.message}</h3>
+          {state.error && (
+            <h3 style={{ color: "red" }}>{state.error.message}</h3>
+          )}
           {
             {
               [BookingTicketStep.reservation]: <Reservation />,
               [BookingTicketStep.review]: <Review />,
-              [BookingTicketStep.complete]: <Complete />,
+              [BookingTicketStep.complete]: <Complete seats={state.seats} />,
             }[state.step]
           }
         </form>
@@ -103,4 +105,7 @@ const Review = () => {
 
 // Mini form 3
 
-const Complete = () => <div>You have completed the booking</div>;
+const Complete = ({ seats }: { seats: Seat[] }) => {
+  const seatString = seats.map((seat) => seat.value).join(", ");
+  return <div>You have completed the booking for seat {seatString}</div>;
+};

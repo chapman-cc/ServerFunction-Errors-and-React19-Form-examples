@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import {
   BookingTicketStep,
   Payload,
@@ -14,23 +13,21 @@ export type State = {
   error?: Error;
 };
 
-export const bookingTicketInMultipleSteps = async (
+export const TicketBookingProxy = async (
   prevState: State,
   payload: Payload
 ): Promise<State> => {
   try {
-    const action = {
-      [BookingTicketStep.reservation]: reserveSeats,
-      [BookingTicketStep.review]: BookTickets,
-      [BookingTicketStep.complete]: undefined,
-    }[prevState.step];
-
-    if (!action) {
-      throw new Error();
+    switch (prevState.step) {
+      case BookingTicketStep.reservation:
+        return reserveSeats(payload.seats);
+      case BookingTicketStep.review:
+        return bookTickets(payload.seats);
+      default:
+        throw new Error();
     }
-
-    return action(payload.seats);
   } catch (error) {
+    // reset user to step 1
     return {
       seats: [],
       error: error instanceof Error ? error : new Error("Something gone wrong"),
@@ -59,14 +56,14 @@ const reserveSeats = (seats: Seat[]): State => {
   }
 };
 
-const BookTickets = (seats: Seat[]): State => {
+const bookTickets = (seats: Seat[]): State => {
   // mark seats as sold
   // add loyalty points to user account
   // add movie to user history
   // call AWS SES to send email to user
 
-  const params = new URLSearchParams(seats.map((seat) => ["seat", seat.value]));
-  redirect(
-    "/multistep-form-useactionstate-and-rhf/cofirm-seat?" + params.toString()
-  );
+  return {
+    seats,
+    step: BookingTicketStep.complete,
+  };
 };

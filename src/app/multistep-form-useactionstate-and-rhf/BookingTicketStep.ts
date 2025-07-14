@@ -15,7 +15,10 @@ const SeatSchema = z.object({
 });
 
 export type Seat = z.infer<typeof SeatSchema>;
-export const SeatsSchema = z.array(SeatSchema);
+export const SeatsSchema = z
+  .array(SeatSchema)
+  .min(1, "You need to buy a min of 1 seat")
+  .max(4, "You are buying too many seats!!! Leave some for others");
 
 export type BookingTicketStep =
   (typeof BookingTicketStep)[keyof typeof BookingTicketStep];
