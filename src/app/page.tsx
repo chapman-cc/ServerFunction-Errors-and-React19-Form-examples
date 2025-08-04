@@ -54,8 +54,8 @@ export default function Home() {
 
         <li>
           <p>
-            <Link href="/react-hook-form-tuple-server-functions">
-              React Hook Form with server actions returning tuple
+            <Link href="/server-function-with-rhf">
+              Server function with react-hook-form
             </Link>
           </p>
         </li>

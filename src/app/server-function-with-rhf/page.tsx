@@ -1,41 +1,38 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useActionState, useEffect } from "react";
+import { FieldErrors, useForm } from "react-hook-form";
 import { createPerson } from "./action";
-import { Person } from "./schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { isPerson, Person, PersonSchema } from "./schema";
 
 const defaultValues = {
   name: "John Doe",
   email: "johndoe@dfds.com",
 } satisfies Person;
 
+type ActionState = Person | FieldErrors<Person> | null;
+
 export default function page() {
   const { formState, register, setError, handleSubmit } = useForm<Person>({
     defaultValues,
+    resolver: zodResolver(PersonSchema),
   });
 
-  const submitPerson = async (person: Person) => {
-    const [created, fieldErrors] = await createPerson(person);
-
-    if (fieldErrors) {
-      for (const field in fieldErrors) {
-        if (field in fieldErrors) {
-          const fieldKey = field as keyof Person;
-          const err = fieldErrors[fieldKey];
-          if (err) {
-            setError(fieldKey, err);
-          }
-        }
-      }
-    } else {
-      alert(
-        `Person id: ${created.id}: ${created.name} (${created.email}) created`
-      );
+  const [state, action, isPending] = useActionState<ActionState, Person>(
+    (_, person) => createPerson(person),
+    null
+  );
+  useEffect(() => {
+    if (!isPerson(state)) {
+      if (state?.root) setError("root", { message: state.root.message });
+      if (state?.name) setError("name", { message: state.name.message });
+      if (state?.email) setError("email", { message: state.email.message });
     }
-  };
+  }, [state]);
 
   return (
     <>
-      <form onClick={handleSubmit(submitPerson)}>
+      <form onClick={handleSubmit(action)}>
         <div>
           <label htmlFor="name">User Name</label>
           <input type="text" {...register("name")} />
