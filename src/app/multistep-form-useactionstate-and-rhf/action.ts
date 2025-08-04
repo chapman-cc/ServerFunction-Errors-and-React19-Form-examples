@@ -1,8 +1,12 @@
 "use server";
 
 import { SeatsSchema } from "./schema";
-import ServerFunction from "./ServerFunction";
-import { Payload, Seat, TicketBookingStep as Step } from "./types";
+import { Payload, Seat, Step } from "./types";
+
+type Action<State, Payload> = (
+  state: State,
+  payload: Payload
+) => Promise<State>;
 
 export type State = {
   step: Step;
@@ -10,11 +14,9 @@ export type State = {
   seats: Seat[];
 };
 
-type Action = ServerFunction.ActionState<State, Payload>;
-
-export const ticketBookingStepController: Action = async (
-  prevState: State,
-  payload: Payload
+export const ticketBookingStepController: Action<State, Payload> = async (
+  prevState,
+  payload
 ) => {
   try {
     // prettier-ignore

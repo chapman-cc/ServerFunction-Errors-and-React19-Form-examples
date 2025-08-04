@@ -1,13 +1,11 @@
-import { TicketBookingStep } from "./types";
-import { Complete } from "./mini-forms/Complete";
-import { Review } from "./mini-forms/Review";
-import { Reservation } from "./mini-forms/Reservation";
-import {
-  BookingTicketFormError,
-  BookingTicketProviders,
-  BookingTicketStepStepper,
-  MiniForm,
-} from "./Providers";
+import { BookingTicketProviders } from "./context";
+import { MiniForm } from "./form-components/MiniForm";
+import { BookingTicketFormError } from "./form-components/BookingTicketFormError";
+import { BookingTicketStepStepper } from "./form-components/BookingTicketStepper";
+import { Complete } from "./form-components/Complete";
+import { Reservation } from "./form-components/Reservation";
+import { Review } from "./form-components/Review";
+import { Step } from "./types";
 
 export default function page() {
   return (
@@ -15,17 +13,18 @@ export default function page() {
       <div>
         <BookingTicketProviders>
           <BookingTicketStepStepper />
+
           <BookingTicketFormError />
 
-          <MiniForm matchingStep={TicketBookingStep.reservation}>
+          <MiniForm matchingStep={Step.reservation}>
             <Reservation />
           </MiniForm>
 
-          <MiniForm matchingStep={TicketBookingStep.review}>
+          <MiniForm matchingStep={Step.review}>
             <Review />
           </MiniForm>
 
-          <MiniForm matchingStep={TicketBookingStep.complete}>
+          <MiniForm matchingStep={Step.complete}>
             <Complete />
           </MiniForm>
         </BookingTicketProviders>
@@ -33,4 +32,9 @@ export default function page() {
       <noscript>Javascript is disabled</noscript>
     </>
   );
+}
+function test(payload: string): boolean | Promise<boolean>;
+function test(state: boolean, payload: string): boolean | Promise<boolean>;
+function test(arg1: string | boolean, arg2?: string): boolean | Promise<boolean> {
+return false
 }

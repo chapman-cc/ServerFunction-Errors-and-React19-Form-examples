@@ -3,19 +3,16 @@ import { SeatSchema } from "./schema";
 
 export type Seat = z.infer<typeof SeatSchema>;
 
-export const TicketBookingStep = {
+export const Step = {
   reservation: "Reservation",
   review: "Review",
   complete: "Complete",
 } as const;
 
-export const TicketBookingSteps = [
-  TicketBookingStep.reservation,
-  TicketBookingStep.review,
-  TicketBookingStep.complete,
-];
+export const Steps = [Step.reservation, Step.review, Step.complete];
 
-export type TicketBookingStep =
-  (typeof TicketBookingStep)[keyof typeof TicketBookingStep];
+export type Step = (typeof Step)[keyof typeof Step];
+
+export type TicketBookingStep = (typeof Step)[keyof typeof Step];
 
 export type Payload = { seats: Seat[] };
