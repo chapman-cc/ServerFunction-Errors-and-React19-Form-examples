@@ -3,8 +3,8 @@ import { Submit } from "./submit-button";
 export default function page() {
   const handleSubmit = async (data: FormData) => {
     "use server";
-    // wait for 5 sec to show pending state
-    await new Promise((res) => setTimeout(res, 5000));
+    // wait for 3 sec to show pending state
+    await new Promise((res) => setTimeout(res, 3000));
     const userName = data.get("user-name");
     throw new Error("Got user name: " + userName);
   };
