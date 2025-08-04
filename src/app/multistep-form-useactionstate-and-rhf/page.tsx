@@ -1,10 +1,32 @@
-import { MultiStepFormWithRHF } from "./MultiStepForm";
+import { TicketBookingStep } from "./BookingTicketStep";
+import { Complete } from "./mini-forms/Complete";
+import { Review } from "./mini-forms/Review";
+import { Reservation } from "./mini-forms/Reservation";
+import {
+  BookingTicketFormError,
+  BookingTicketProviders,
+  BookingTicketStepStepper,
+  MiniForm,
+} from "./Providers";
 
 export default function page() {
   return (
     <>
       <div>
-        <MultiStepFormWithRHF />
+        <BookingTicketProviders>
+          <BookingTicketStepStepper />
+          <BookingTicketFormError />
+
+          <MiniForm matchingStep={TicketBookingStep.reservation}>
+            <Reservation />
+          </MiniForm>
+          <MiniForm matchingStep={TicketBookingStep.review}>
+            <Review />
+          </MiniForm>
+          <MiniForm matchingStep={TicketBookingStep.complete}>
+            <Complete />
+          </MiniForm>
+        </BookingTicketProviders>
       </div>
       <noscript>Javascript is disabled</noscript>
     </>

@@ -48,7 +48,11 @@ const reserveSeats = (seats: Seat[]): State => {
       seats: parsedSeats,
     };
   } catch (error) {
-    const seatString = seats.map((seat) => seat.value).join(", ");
+    console.log(error);
+    const seatString = seats
+      .filter(Boolean)
+      .map((seat) => seat.value)
+      .join(", ");
     return {
       step: Step.reservation,
       seats: [],

@@ -11,7 +11,7 @@ const SeatSchema = z.object({
     .string()
     .regex(/[A-E]([1-9]|1[0-5])/)
     .nonempty(),
-  id: z.string().nonempty(),
+  id: z.string().nullish(),
 });
 
 export type Seat = z.infer<typeof SeatSchema>;
