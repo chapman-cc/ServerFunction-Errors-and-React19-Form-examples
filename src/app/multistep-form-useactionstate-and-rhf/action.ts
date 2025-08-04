@@ -1,12 +1,8 @@
 "use server";
 
-import {
-  TicketBookingStep as Step,
-  Payload,
-  Seat,
-  SeatsSchema,
-} from "./BookingTicketStep";
+import { SeatsSchema } from "./schema";
 import ServerFunction from "./ServerFunction";
+import { Payload, Seat, TicketBookingStep as Step } from "./types";
 
 export type State = {
   step: Step;
@@ -48,7 +44,6 @@ const reserveSeats = (seats: Seat[]): State => {
       seats: parsedSeats,
     };
   } catch (error) {
-    console.log(error);
     const seatString = seats
       .filter(Boolean)
       .map((seat) => seat.value)

@@ -1,7 +1,7 @@
 "use client";
 import { useFormStatus } from "react-dom";
 import { useFormContext } from "react-hook-form";
-import { Payload } from "../BookingTicketStep";
+import { Payload } from "../types";
 
 // Mini form 2
 

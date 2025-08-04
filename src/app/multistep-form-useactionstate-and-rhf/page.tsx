@@ -1,4 +1,4 @@
-import { TicketBookingStep } from "./BookingTicketStep";
+import { TicketBookingStep } from "./types";
 import { Complete } from "./mini-forms/Complete";
 import { Review } from "./mini-forms/Review";
 import { Reservation } from "./mini-forms/Reservation";
@@ -20,9 +20,11 @@ export default function page() {
           <MiniForm matchingStep={TicketBookingStep.reservation}>
             <Reservation />
           </MiniForm>
+
           <MiniForm matchingStep={TicketBookingStep.review}>
             <Review />
           </MiniForm>
+
           <MiniForm matchingStep={TicketBookingStep.complete}>
             <Complete />
           </MiniForm>

@@ -12,7 +12,7 @@ import {
 } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { State, ticketBookingStepController } from "./action";
-import { Payload, TicketBookingStep } from "./BookingTicketStep";
+import { Payload, TicketBookingStep, TicketBookingSteps } from "./types";
 
 const BookingTicketStateContext = createContext<State | null>(null);
 
@@ -36,16 +36,14 @@ export function BookingTicketProviders({ children }: PropsWithChildren) {
     startTransition(() => formAction(payload));
   };
 
-  const handleSubmit = methods.handleSubmit(formActionTransition);
-
   return (
-    <>
-      <BookingTicketStateContext.Provider value={state}>
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit}>{children}</form>
-        </FormProvider>
-      </BookingTicketStateContext.Provider>
-    </>
+    <BookingTicketStateContext.Provider value={state}>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(formActionTransition)}>
+          {children}
+        </form>
+      </FormProvider>
+    </BookingTicketStateContext.Provider>
   );
 }
 
@@ -53,7 +51,7 @@ export function BookingTicketStepStepper() {
   const { step } = useBookingTicketStateContext();
 
   return (
-    <Stepper activeStep={step}>
+    <Stepper activeStep={TicketBookingSteps.indexOf(step)}>
       <Step>
         <StepLabel>{TicketBookingStep.reservation}</StepLabel>
       </Step>

@@ -1,7 +1,7 @@
 "use client";
 import { useFormStatus } from "react-dom";
-import { useFormContext, useFieldArray } from "react-hook-form";
-import { Payload } from "../BookingTicketStep";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { Payload } from "../types";
 
 // Mini form 1
 
@@ -10,16 +10,20 @@ export const Reservation = () => {
   const { fields, append } = useFieldArray({ control, name: "seats" });
   const { pending } = useFormStatus();
 
+  const appendSeatInput = () => {
+    append({ id: Date.now().toString(36), value: "" });
+  };
+
   return (
     <div>
-      <button type="button" onClick={() => append({ id: "", value: "" })}>
+      <button type="button" onClick={appendSeatInput}>
         Add seat
       </button>
       {fields.map((field, idx) => (
         <div key={field.id}>
           <label htmlFor={field.id}>
             Seat {idx + 1}
-            <input id={field.id} {...register(`seats.${idx}.value` as const)} />
+            <input id={field.id} {...register(`seats.${idx}.value`)} />
           </label>
           <br />
         </div>
