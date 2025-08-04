@@ -8,10 +8,7 @@ export type State =
   | "wrong type"
   | "size too big";
 
-export const handleSubmitWithState = async (
-  prevState: State,
-  data: FormData
-): Promise<State> => {
+export const submitDocument = async (docId: number): Promise<State> => {
   await new Promise((res) => setTimeout(res, 1000));
   return "success";
 };

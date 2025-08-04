@@ -1,6 +1,6 @@
 "use client";
 import { CSSProperties, useActionState } from "react";
-import { handleSubmitWithState, State } from "./action";
+import { submitDocument, State } from "./action";
 
 type ButtonProps = {
   color?: CSSProperties["color"];
@@ -33,9 +33,14 @@ function statePropsMatcher(state: State): ButtonProps {
   }[state];
 }
 
-export function ApproveHazardousDocButton() {
-  const [state, formAction, isPending] = useActionState<State, FormData>(
-    handleSubmitWithState,
+interface Props {
+  docId: number;
+}
+
+export function ApproveHazardousDocButton({ docId }: Props) {
+  const submitDocumentById = submitDocument.bind(null, docId);
+  const [state, formAction, isPending] = useActionState(
+    submitDocumentById,
     "unapproved"
   );
 

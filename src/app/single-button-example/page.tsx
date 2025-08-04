@@ -16,7 +16,7 @@ export default function page() {
     <>
       <div style={style}>
         <p>Document 1</p>
-        <ApproveHazardousDocButton />
+        <ApproveHazardousDocButton docId={1} />
       </div>
       <noscript>Javascript is disabled</noscript>
     </>
