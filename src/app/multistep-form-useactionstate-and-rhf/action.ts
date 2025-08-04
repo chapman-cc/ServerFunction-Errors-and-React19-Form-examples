@@ -1,11 +1,12 @@
 "use server";
 
 import {
-  BookingTicketStep as Step,
+  TicketBookingStep as Step,
   Payload,
   Seat,
   SeatsSchema,
 } from "./BookingTicketStep";
+import ServerFunction from "./ServerFunction";
 
 export type State = {
   step: Step;
@@ -13,10 +14,12 @@ export type State = {
   seats: Seat[];
 };
 
-export const ticketBookingStepController = async (
+type Action = ServerFunction.ActionState<State, Payload>;
+
+export const ticketBookingStepController: Action = async (
   prevState: State,
   payload: Payload
-): Promise<State> => {
+) => {
   try {
     // prettier-ignore
     switch (prevState.step) {

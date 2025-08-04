@@ -11,7 +11,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { ticketBookingStepController } from "./action";
-import { BookingTicketStep, Payload, Seat } from "./BookingTicketStep";
+import { TicketBookingStep, Payload, Seat } from "./BookingTicketStep";
 import { useFormStatus } from "react-dom";
 
 export function MultiStepFormWithRHF() {
@@ -19,7 +19,7 @@ export function MultiStepFormWithRHF() {
 
   const [state, formAction] = useActionState(ticketBookingStepController, {
     seats: [],
-    step: 0,
+    step: TicketBookingStep.reservation,
   });
 
   const formActionTransition = (payload: Payload) => {
@@ -32,13 +32,13 @@ export function MultiStepFormWithRHF() {
         <form onSubmit={methods.handleSubmit(formActionTransition)}>
           <Stepper activeStep={state.step}>
             <Step>
-              <StepLabel>{BookingTicketStep.reservation}</StepLabel>
+              <StepLabel>{TicketBookingStep.reservation}</StepLabel>
             </Step>
             <Step>
-              <StepLabel>{BookingTicketStep.review}</StepLabel>
+              <StepLabel>{TicketBookingStep.review}</StepLabel>
             </Step>
             <Step>
-              <StepLabel>{BookingTicketStep.complete}</StepLabel>
+              <StepLabel>{TicketBookingStep.complete}</StepLabel>
             </Step>
           </Stepper>
           {state.error && (
@@ -46,9 +46,9 @@ export function MultiStepFormWithRHF() {
           )}
           {
             {
-              [BookingTicketStep.reservation]: <Reservation />,
-              [BookingTicketStep.review]: <Review />,
-              [BookingTicketStep.complete]: <Complete seats={state.seats} />,
+              [TicketBookingStep.reservation]: <Reservation />,
+              [TicketBookingStep.review]: <Review />,
+              [TicketBookingStep.complete]: <Complete seats={state.seats} />,
             }[state.step]
           }
         </form>
