@@ -3,10 +3,10 @@
 import { SeatsSchema } from "./schema";
 import { Payload, Seat, Step } from "./types";
 
-type Action<State, Payload> = (
-  state: State,
+type ServerFunction<FormState, Payload> = (
+  state: FormState,
   payload: Payload
-) => Promise<State>;
+) => Promise<FormState>;
 
 export type State = {
   step: Step;
@@ -14,10 +14,10 @@ export type State = {
   seats: Seat[];
 };
 
-export const ticketBookingStepController: Action<State, Payload> = async (
-  prevState,
-  payload
-) => {
+export const ticketBookingStepController: ServerFunction<
+  State,
+  Payload
+> = async (prevState, payload) => {
   try {
     // prettier-ignore
     switch (prevState.step) {
