@@ -33,8 +33,3 @@ export default function page() {
     </>
   );
 }
-function test(payload: string): boolean | Promise<boolean>;
-function test(state: boolean, payload: string): boolean | Promise<boolean>;
-function test(arg1: string | boolean, arg2?: string): boolean | Promise<boolean> {
-return false
-}

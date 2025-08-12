@@ -1,3 +1,5 @@
+"use client";
+
 import { Step, Stepper, StepLabel } from "@mui/material";
 import { useBookingTicketStateContext } from "../context";
 import { Steps, Step as STEP } from "../types";
