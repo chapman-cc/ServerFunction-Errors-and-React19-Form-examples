@@ -13,11 +13,12 @@ export const bookingTicketInMultipleSteps = async (
   prevState: State,
   data: FormData
 ): Promise<State> => {
-  return {
-    [BookingTicketStep.reservation]: reservation(data),
-    [BookingTicketStep.review]: review(data),
-    [BookingTicketStep.complete]: complete(data),
-  }[prevState.step];
+  // prettier-ignore
+  switch (prevState.step) {
+    case BookingTicketStep.reservation: return reservation(data);
+    case BookingTicketStep.review:      return review(data);
+    case BookingTicketStep.complete:    return complete(data);
+  }
 };
 
 const reservation = (data: FormData): State => {
@@ -47,6 +48,8 @@ const review = (data: FormData): State => {
   return { step: BookingTicketStep.complete, seats: seats };
 };
 
+//! this part doesn't run
+//! client side complete step doesn't trigger this function
 const complete = (data: FormData): State => {
   const seats = data.getAll("seat").map((value) => value.toString());
   const params = new URLSearchParams(seats.map((seat) => ["seat", seat]));

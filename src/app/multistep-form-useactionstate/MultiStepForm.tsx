@@ -3,7 +3,7 @@
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Stepper from "@mui/material/Stepper";
-import { useActionState } from "react";
+import { startTransition, useActionState, useCallback } from "react";
 import { bookingTicketInMultipleSteps, State } from "./action";
 import { BookingTicketStep, Seat } from "./BookingTicketStep";
 
@@ -18,9 +18,14 @@ export function MultiStepForm() {
   );
   const { step, seats } = state;
 
+  const startFormActionTransition = useCallback(
+    (data: FormData) => startTransition(() => formAction(data)),
+    [formAction]
+  );
+
   return (
     <>
-      <form action={(formData) => formAction(formData)}>
+      <form action={startFormActionTransition}>
         <Stepper activeStep={state.step}>
           {orderedSteps.map(([label, step]) => (
             <Step key={step}>
