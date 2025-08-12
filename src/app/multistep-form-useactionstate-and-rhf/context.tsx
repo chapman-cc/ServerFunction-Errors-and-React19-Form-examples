@@ -34,12 +34,12 @@ export function BookingTicketProviders({ children }: PropsWithChildren) {
   };
 
   return (
-    <BookingTicketStateContext.Provider value={state}>
+    <BookingTicketStateContext value={state}>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(formActionTransition)}>
           {children}
         </form>
       </FormProvider>
-    </BookingTicketStateContext.Provider>
+    </BookingTicketStateContext>
   );
 }
